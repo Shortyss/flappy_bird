@@ -2,7 +2,7 @@ import pygame
 import sys
 from settings import Settings
 from ufo import Ufo
-
+from pipe import Pipe
 
 class Game:
     def __init__(self):
@@ -16,6 +16,8 @@ class Game:
         self.background = pygame.image.load("2205_w026_n002_1983b_p1_1983.jpg")
         self.background = pygame.transform.scale(self.background, (self.settings.screen_width, self.settings.screen_height))
         self.background_x = 0
+
+        self.pipe = Pipe(self.settings.screen_width, self.settings.screen_height, 50, 200)
 
         self.ufo = Ufo(self)
 
@@ -46,6 +48,9 @@ class Game:
 
             self.ufo.blit_me()
             self.ufo.update()
+
+            self.pipe.move()
+            self.pipe.draw(self.screen)
 
             pygame.display.flip()
             self.clock.tick(self.settings.fps)

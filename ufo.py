@@ -18,7 +18,7 @@ class Ufo():
     def update(self):
         self.ufo_velocity += self.gravity
         if self.move_up:
-            self.ufo_velocity = -10
+            self.ufo_velocity = -5
 
         self.rect.y += self.ufo_velocity
 
