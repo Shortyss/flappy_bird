@@ -10,6 +10,8 @@ class Game:
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
 
+        self.score = 0
+
         pygame.display.set_caption("Space Adventure 2023")
         self.clock = pygame.time.Clock()
 
@@ -21,6 +23,36 @@ class Game:
 
         self.ufo = Ufo(self)
 
+    def display_score(self):
+        font = pygame.font.Font(None, 36)
+        text = font.render("Score" + str(self.score), True, (255, 255, 255))
+        text_rect = text.get_rect(topleft=(10, 10))
+        self.screen.blit(text, text_rect)
+
+    def game_over(self):
+        font = pygame.font.Font(None, 46)
+        text = font.render(f"GAME OVER! \n For restart type R or Q for quit.", True, (255,0, 0))
+        text_rect = text.get_rect(center=(self.settings.screen_width / 2, self.settings.screen_height / 2))
+        self.screen.blit(text,text_rect)
+        pygame.display.flip()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_r:
+                        self.restart_game()
+                    elif event.key == pygame.K_q:
+                        pygame.quit()
+                        sys.exit()
+
+    def restart_game(self):
+        self.pipe = Pipe(self.settings.screen_width, self.settings.screen_height, 50, 200)
+        self.ufo = Ufo(self)
+        self.score = 0
+        self.run()
 
     def run(self):
         while True:
@@ -51,6 +83,19 @@ class Game:
 
             self.pipe.move()
             self.pipe.draw(self.screen)
+
+            if self.pipe.pipe_x < self.ufo.rect.right:
+                if not (self.ufo.rect.bottom < self.pipe.top_pipe_height and
+                        self.ufo.rect.top > self.pipe.top_pipe_height - self.pipe.gap_height):
+                    self.game_over()
+                else:
+                    if self.pipe.pipe_x < self.ufo.rect.left:
+                        self.score += 1
+
+            if self.ufo.rect.bottom >= self.settings.screen_height:
+                self.game_over()
+
+            self.display_score()
 
             pygame.display.flip()
             self.clock.tick(self.settings.fps)
