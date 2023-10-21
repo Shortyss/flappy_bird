@@ -12,7 +12,6 @@ class Ufo():
         self.rect.midleft = self.screen_rect.midleft
         self.move_up = False
 
-
         self.ufo_velocity = 0
         self.gravity = 1
 
