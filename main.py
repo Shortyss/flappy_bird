@@ -13,9 +13,9 @@ class Game:
         pygame.display.set_caption("Space Adventure 2023")
         self.clock = pygame.time.Clock()
 
-        self.background = pygame.image.load("2205_w026_n002_1983b_p1_1983.jpg")
-        self.background = pygame.transform.scale(self.background, (self.settings.screen_width, self.settings.screen_height))
-        self.background_x = 0
+        self.backgroud = pygame.image.load("2205_w026_n002_1983b_p1_1983.jpg")
+        self.backgroud = pygame.transform.scale(self.backgroud, (self.settings.screen_width, self.settings.screen_height))
+        self.backgroud_x = 0
 
         self.ufo = Ufo(self)
 
@@ -26,26 +26,16 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        self.ufo.move_up = True
-                    if event.key == pygame.K_q:
-                        sys.exit()
 
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_SPACE:
-                        self.ufo.move_up = False
+            self.backgroud_x -= 2
 
-            self.background_x -= 2
+            if self.backgroud_x <= -self.settings.screen_width:
+                self.backgroud_x = 0
 
-            if self.background_x <= -self.settings.screen_width:
-                self.background_x = 0
-
-            self.screen.blit(self.background, (self.background_x, 0))
-            self.screen.blit(self.background, (self.background_x + self.settings.screen_width, 0))
+            self.screen.blit(self.backgroud, (self.backgroud_x, 0))
+            self.screen.blit(self.backgroud, (self.backgroud_x + self.settings.screen_width, 0))
 
             self.ufo.blit_me()
-            self.ufo.update()
 
             pygame.display.flip()
             self.clock.tick(self.settings.fps)
