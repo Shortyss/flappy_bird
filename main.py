@@ -1,6 +1,7 @@
 import pygame
 import sys
 from settings import Settings
+from ufo import Ufo
 
 
 class Game:
@@ -15,6 +16,8 @@ class Game:
         self.backgroud = pygame.image.load("2205_w026_n002_1983b_p1_1983.jpg")
         self.backgroud = pygame.transform.scale(self.backgroud, (self.settings.screen_width, self.settings.screen_height))
         self.backgroud_x = 0
+
+        self.ufo = Ufo(self)
 
 
     def run(self):
@@ -31,6 +34,8 @@ class Game:
 
             self.screen.blit(self.backgroud, (self.backgroud_x, 0))
             self.screen.blit(self.backgroud, (self.backgroud_x + self.settings.screen_width, 0))
+
+            self.ufo.blit_me()
 
             pygame.display.flip()
             self.clock.tick(self.settings.fps)
